@@ -6,290 +6,188 @@
     <title>전데렐라의 청소생각</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: #f5f0e8; display: flex; flex-direction: column; align-items: center; min-height: 100vh; font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif; }
+        .page-wrap { width: 100%; max-width: 480px; display: flex; flex-direction: column; align-items: stretch; }
+        .flyer-container { position: relative; width: 100%; overflow: hidden; }
+        .flyer-img, .brand-img { width: 100%; height: auto; display: block; }
 
-        body {
-            background: #f5f0e8;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            min-height: 100vh;
-            font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif;
-        }
-
-        .page-wrap {
-            width: 100%;
-            max-width: 480px;
-            display: flex;
-            flex-direction: column;
-            align-items: stretch;
-        }
-
-        .flyer-container {
-            position: relative;
-            width: 100%;
-        }
-
-        .flyer-img, .brand-img {
-            width: 100%;
-            height: auto;
-            display: block;
-            object-fit: contain;
-        }
-
-        /* =============================
-           ❄️ 눈꽃 효과
-        ============================= */
-        .snowflake {
-            position: absolute;
-            color: white;
-            font-size: 14px;
-            opacity: 0;
-            animation: snow-fall 3s ease-in infinite;
-            pointer-events: none;
-            text-shadow: 0 0 6px rgba(150, 220, 255, 0.9);
-        }
-
-        .snowflake:nth-child(1)  { left: 58%; animation-delay: 0s;    font-size: 12px; }
-        .snowflake:nth-child(2)  { left: 65%; animation-delay: 0.4s;  font-size: 16px; }
-        .snowflake:nth-child(3)  { left: 72%; animation-delay: 0.8s;  font-size: 10px; }
-        .snowflake:nth-child(4)  { left: 78%; animation-delay: 1.2s;  font-size: 14px; }
-        .snowflake:nth-child(5)  { left: 62%; animation-delay: 1.6s;  font-size: 11px; }
-        .snowflake:nth-child(6)  { left: 70%; animation-delay: 2.0s;  font-size: 13px; }
-        .snowflake:nth-child(7)  { left: 75%; animation-delay: 2.4s;  font-size: 10px; }
-        .snowflake:nth-child(8)  { left: 68%; animation-delay: 2.8s;  font-size: 15px; }
-
-        @keyframes snow-fall {
-            0%   { top: 28%; opacity: 0; transform: translateX(0) rotate(0deg); }
-            10%  { opacity: 1; }
-            80%  { opacity: 0.8; }
-            100% { top: 75%; opacity: 0; transform: translateX(15px) rotate(360deg); }
-        }
-
-        /* =============================
-           🌊 물결선 효과 (에어컨 바람)
-        ============================= */
-        .wave-wrap {
-            position: absolute;
-            top: 30%;
-            left: 50%;
-            width: 44%;
-            height: 10%;
-            pointer-events: none;
-            overflow: hidden;
-        }
-
-        .wave-line {
-            position: absolute;
-            height: 2px;
-            border-radius: 50%;
-            background: linear-gradient(to right, transparent, rgba(150, 220, 255, 0.8), transparent);
-            animation: wave-move 2s ease-in-out infinite;
-            opacity: 0;
-        }
-
-        .wave-line:nth-child(1) { top: 10%; width: 75%; animation-delay: 0s; }
-        .wave-line:nth-child(2) { top: 35%; width: 90%; animation-delay: 0.35s; }
-        .wave-line:nth-child(3) { top: 60%; width: 80%; animation-delay: 0.7s; }
-        .wave-line:nth-child(4) { top: 85%; width: 65%; animation-delay: 1.05s; }
-
-        @keyframes wave-move {
-            0%   { transform: translateX(-100%); opacity: 0; }
-            20%  { opacity: 1; }
-            80%  { opacity: 0.8; }
-            100% { transform: translateX(120%); opacity: 0; }
-        }
-
-        /* =============================
-           💧 물방울 효과
-        ============================= */
-        .drop {
-            position: absolute;
-            width: 6px;
-            height: 9px;
-            border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
-            background: rgba(100, 200, 255, 0.75);
-            box-shadow: 0 0 6px rgba(100, 200, 255, 0.5);
-            opacity: 0;
-            animation: drop-fall 2.5s ease-in infinite;
-            pointer-events: none;
-        }
-
-        .drop:nth-child(1)  { left: 56%; animation-delay: 0s;    width: 5px;  height: 8px; }
-        .drop:nth-child(2)  { left: 63%; animation-delay: 0.5s;  width: 7px;  height: 10px; }
-        .drop:nth-child(3)  { left: 70%; animation-delay: 1.0s;  width: 5px;  height: 7px; }
-        .drop:nth-child(4)  { left: 76%; animation-delay: 1.5s;  width: 6px;  height: 9px; }
-        .drop:nth-child(5)  { left: 60%; animation-delay: 2.0s;  width: 4px;  height: 6px; }
-        .drop:nth-child(6)  { left: 73%; animation-delay: 0.8s;  width: 6px;  height: 8px; }
-
-        @keyframes drop-fall {
-            0%   { top: 30%; opacity: 0; transform: scaleX(1); }
-            10%  { opacity: 0.9; }
-            85%  { opacity: 0.7; transform: scaleX(1); }
-            100% { top: 72%; opacity: 0; transform: scaleX(1.4); }
-        }
-
-        /* =============================
-           ✨ shimmer 빛 효과
-        ============================= */
-        .shimmer-overlay {
+        /* ====== 바람 효과 ====== */
+        /* SVG로 진짜 부채꼴 퍼지는 바람선 구현 */
+        .wind-svg {
             position: absolute;
             top: 0; left: 0;
             width: 100%; height: 100%;
             pointer-events: none;
-            overflow: hidden;
+            overflow: visible;
         }
+        .wind-svg line {
+    stroke-linecap: round;
+    stroke-opacity: 0;
+    animation: wind-fan 3s ease-in-out infinite;
+    }
 
-        .shimmer-overlay::after {
-            content: '';
+        /* 10개 바람선 — 시작점(에어컨 54~90%), 끝점(30~110%) */
+        /* stroke-dasharray로 길이 30% 제어 */
+      .wind-svg line:nth-child(1)  { stroke: rgba(150,220,255,0.75); stroke-width: 0.4; animation-delay: 0.0s; }
+.wind-svg line:nth-child(2)  { stroke: rgba(160,225,255,0.80); stroke-width: 0.5; animation-delay: 0.3s; }
+.wind-svg line:nth-child(3)  { stroke: rgba(175,230,255,0.85); stroke-width: 0.6; animation-delay: 0.6s; }
+.wind-svg line:nth-child(4)  { stroke: rgba(185,235,255,0.90); stroke-width: 0.7; animation-delay: 0.9s; }
+.wind-svg line:nth-child(5)  { stroke: rgba(200,240,255,1.00); stroke-width: 0.8; animation-delay: 1.2s; }
+.wind-svg line:nth-child(6)  { stroke: rgba(200,240,255,1.00); stroke-width: 0.8; animation-delay: 1.5s; }
+.wind-svg line:nth-child(7)  { stroke: rgba(185,235,255,0.90); stroke-width: 0.7; animation-delay: 1.8s; }
+.wind-svg line:nth-child(8)  { stroke: rgba(175,230,255,0.85); stroke-width: 0.6; animation-delay: 2.1s; }
+.wind-svg line:nth-child(9)  { stroke: rgba(160,225,255,0.80); stroke-width: 0.5; animation-delay: 2.4s; }
+.wind-svg line:nth-child(10) { stroke: rgba(150,220,255,0.75); stroke-width: 0.4; animation-delay: 2.7s; }
+
+
+
+        @keyframes wind-fan {
+    0%   { stroke-opacity: 0; }
+    15%  { stroke-opacity: 0.9; }
+    70%  { stroke-opacity: 0.7; }
+    100% { stroke-opacity: 0; }
+       }
+
+
+        /* ====== 반짝임 (flash) ====== */
+        .flash {
             position: absolute;
-            top: 0;
-            left: -100%;
-            width: 55%;
-            height: 100%;
-            background: linear-gradient(
-                105deg,
-                transparent 30%,
-                rgba(255, 255, 255, 0.12) 50%,
-                transparent 70%
-            );
-            animation: shimmer-move 4s ease-in-out infinite;
-        }
-
-        @keyframes shimmer-move {
-            0%   { left: -60%; }
-            100% { left: 160%; }
-        }
-
-        /* =============================
-           📞 전화 버튼
-        ============================= */
-        .btn-wrap {
-            width: 100%;
-            padding: 10px 0 30px;
-            background: #f5f0e8;
-        }
-
-        .btn-call {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 12px;
-            width: 100%;
-            padding: 16px 24px;
-            background: #2E9E9E;
-            border-radius: 12px;
-            text-decoration: none;
-            box-shadow: 0 4px 15px rgba(46, 158, 158, 0.3);
-        }
-
-        .phone-icon {
-            width: 40px;
-            height: 40px;
+            width: 5px; height: 5px;
             background: white;
             border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            animation: ring 1.5s ease-in-out infinite;
-            flex-shrink: 0;
+            opacity: 0;
+            pointer-events: none;
+            box-shadow:
+                0 0 6px 4px rgba(255,255,255,0.95),
+                0 0 16px 8px rgba(255,255,255,0.6),
+                0 0 28px 14px rgba(255,255,255,0.25);
+            animation: flash-burst 3.5s ease-in-out infinite;
+        }
+        /* 세로 0~8%, 가장자리 위주 배치 */
+        .flash:nth-child(1)  { top: 2%;  left: 4%;  animation-delay: 0.0s; }
+        .flash:nth-child(2)  { top: 5%;  left: 92%; animation-delay: 0.7s; }
+        .flash:nth-child(3)  { top: 1%;  left: 20%; animation-delay: 1.4s; }
+        .flash:nth-child(4)  { top: 6%;  left: 78%; animation-delay: 2.1s; }
+        .flash:nth-child(5)  { top: 3%;  left: 50%; animation-delay: 0.4s; }
+        .flash:nth-child(6)  { top: 7%;  left: 8%;  animation-delay: 1.1s; }
+        .flash:nth-child(7)  { top: 4%;  left: 65%; animation-delay: 1.8s; }
+        .flash:nth-child(8)  { top: 2%;  left: 85%; animation-delay: 2.5s; }
+        .flash:nth-child(9)  { top: 6%;  left: 35%; animation-delay: 3.0s; }
+        @keyframes flash-burst {
+            0%   { transform: scale(0); opacity: 0; }
+            8%   { transform: scale(2.0); opacity: 1; }
+            20%  { transform: scale(1.3); opacity: 0.7; }
+            35%  { transform: scale(0);   opacity: 0; }
+            100% { transform: scale(0);   opacity: 0; }
         }
 
-        .phone-icon svg {
-            width: 22px;
-            height: 22px;
-            fill: #2E9E9E;
+        /* ====== 물방울 ====== */
+        .drop-wrap { position: absolute; pointer-events: none; }
+        .drop-wrap:nth-of-type(1) { top: 50%; left: 58%; }
+        .drop-wrap:nth-of-type(2) { top: 50%; left: 70%; }
+        .drop-wrap:nth-of-type(3) { top: 50%; left: 82%; }
+        .drop {
+            position: absolute;
+            width: 6px; height: 8px;
+            background: radial-gradient(circle at 35%, rgba(255,255,255,0.9), rgba(150,220,255,0.7) 50%, rgba(100,190,255,0.4));
+            border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+            opacity: 0;
+            animation: drop-roll 3s ease-in infinite;
+        }
+        .drop-wrap:nth-of-type(1) .drop { animation-delay: 0.0s; }
+        .drop-wrap:nth-of-type(2) .drop { animation-delay: 1.0s; }
+        .drop-wrap:nth-of-type(3) .drop { animation-delay: 2.0s; }
+        @keyframes drop-roll {
+            0%   { transform: translate(0, 0);    opacity: 0; }
+            10%  { opacity: 0.9; }
+            65%  { transform: translate(3px, 28px); opacity: 0.8; }
+            75%  { transform: translate(4px, 34px); opacity: 0; }
+            100% { opacity: 0; }
+        }
+        .drop-burst {
+            position: absolute;
+            width: 4px; height: 4px;
+            border-radius: 50%;
+            border: 1.5px solid rgba(150,220,255,0.9);
+            opacity: 0;
+            box-shadow: 0 0 6px rgba(150,220,255,0.8), 0 0 12px rgba(255,255,255,0.5);
+            animation: burst-expand 3s ease-out infinite;
+        }
+        .drop-wrap:nth-of-type(1) .drop-burst { animation-delay: 0.65s; }
+        .drop-wrap:nth-of-type(2) .drop-burst { animation-delay: 1.65s; }
+        .drop-wrap:nth-of-type(3) .drop-burst { animation-delay: 2.65s; }
+        @keyframes burst-expand {
+            0%   { transform: translate(4px, 34px) scale(0); opacity: 0; }
+            64%  { opacity: 0; }
+            65%  { transform: translate(4px, 34px) scale(0); opacity: 1; }
+            85%  { transform: translate(4px, 34px) scale(4); opacity: 0.6; }
+            100% { transform: translate(4px, 34px) scale(6); opacity: 0; }
         }
 
-        @keyframes ring {
-            0%   { transform: rotate(0deg); }
-            8%   { transform: rotate(18deg); }
-            16%  { transform: rotate(-18deg); }
-            24%  { transform: rotate(18deg); }
-            32%  { transform: rotate(-18deg); }
-            40%  { transform: rotate(0deg); }
-            100% { transform: rotate(0deg); }
-        }
+        /* ====== shimmer ====== */
+        .shimmer-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; overflow: hidden; }
+        .shimmer-overlay::after { content: ''; position: absolute; top: 0; left: -100%; width: 50%; height: 100%; background: linear-gradient(105deg, transparent 35%, rgba(255,255,255,0.10) 50%, transparent 65%); animation: shimmer-move 5s ease-in-out infinite; }
+        @keyframes shimmer-move { 0% { left: -60%; } 100% { left: 160%; } }
 
-        .call-text {
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-        }
-
-        .call-label {
-            font-size: 12px;
-            color: rgba(255, 255, 255, 0.85);
-            font-weight: 400;
-            letter-spacing: 1px;
-            margin-bottom: 3px;
-        }
-
-        .call-number {
-            font-size: 28px;
-            color: white;
-            font-weight: 900;
-            letter-spacing: 2px;
-            line-height: 1;
-        }
+        /* ====== 전화 버튼 ====== */
+        .btn-wrap { width: 100%; padding: 10px 0 30px; background: #f5f0e8; }
+        .btn-call { display: flex; align-items: center; justify-content: center; gap: 12px; width: 100%; padding: 16px 24px; background: #2E9E9E; border-radius: 12px; text-decoration: none; box-shadow: 0 4px 15px rgba(46,158,158,0.3); }
+        .phone-icon { width: 40px; height: 40px; background: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; animation: ring 1.5s ease-in-out infinite; flex-shrink: 0; }
+        .phone-icon svg { width: 22px; height: 22px; fill: #2E9E9E; }
+        @keyframes ring { 0% { transform: rotate(0deg); } 8% { transform: rotate(18deg); } 16% { transform: rotate(-18deg); } 24% { transform: rotate(18deg); } 32% { transform: rotate(-18deg); } 40% { transform: rotate(0deg); } 100% { transform: rotate(0deg); } }
+        .call-text { display: flex; flex-direction: column; align-items: flex-start; }
+        .call-label { font-size: 12px; color: rgba(255,255,255,0.85); font-weight: 400; letter-spacing: 1px; margin-bottom: 3px; }
+        .call-number { font-size: 28px; color: white; font-weight: 900; letter-spacing: 2px; line-height: 1; }
     </style>
 </head>
 <body>
     <div class="page-wrap">
-
-        <!-- 전단지 + 모든 효과 -->
         <div class="flyer-container">
             <img class="flyer-img" src="flyer.jpg" alt="에어컨 분해세척 전단지">
 
-            <!-- ❄️ 눈꽃 -->
-            <div class="snowflake">❄</div>
-            <div class="snowflake">❄</div>
-            <div class="snowflake">❄</div>
-            <div class="snowflake">❄</div>
-            <div class="snowflake">❄</div>
-            <div class="snowflake">❄</div>
-            <div class="snowflake">❄</div>
-            <div class="snowflake">❄</div>
+            <!-- 바람 SVG — 시작점(에어컨 54~90%), 끝점(30~110%), 세로 50%→65% -->
+            <!-- flyer 실제 비율: 480×860 기준 퍼센트 사용 -->
+            <svg class="wind-svg" viewBox="0 0 100 100" preserveAspectRatio="none">
+                <!-- x1=시작가로%, y1=50%, x2=끝가로%, y2=65% -->
+                <!-- stroke-dasharray = 선길이의 30%만 표시 -->
+                <line x1="54" y1="50" x2="30" y2="57"/>
+                <line x1="58" y1="50" x2="36" y2="57"/>
+                <line x1="63" y1="50" x2="44" y2="57"/>
+                <line x1="68" y1="50" x2="54" y2="57"/>
+                <line x1="72" y1="50" x2="64" y2="57"/>
+                <line x1="77" y1="50" x2="77" y2="57"/>
+                <line x1="81" y1="50" x2="87" y2="57"/>
+                <line x1="85" y1="50" x2="94" y2="57"/>
+                <line x1="88" y1="50" x2="100" y2="57"/>
+                <line x1="90" y1="50" x2="107" y2="57"/>
 
-            <!-- 🌊 에어컨 바람 물결 -->
-            <div class="wave-wrap">
-                <div class="wave-line"></div>
-                <div class="wave-line"></div>
-                <div class="wave-line"></div>
-                <div class="wave-line"></div>
-            </div>
+            </svg>
 
-            <!-- 💧 물방울 -->
-            <div class="drop"></div>
-            <div class="drop"></div>
-            <div class="drop"></div>
-            <div class="drop"></div>
-            <div class="drop"></div>
-            <div class="drop"></div>
+            <!-- 반짝임 -->
+            <div class="flash"></div>
+            <div class="flash"></div>
+            <div class="flash"></div>
+            <div class="flash"></div>
+            <div class="flash"></div>
+            <div class="flash"></div>
+            <div class="flash"></div>
+            <div class="flash"></div>
+            <div class="flash"></div>
 
-            <!-- ✨ shimmer -->
+            <!-- 물방울 -->
+            <div class="drop-wrap"><div class="drop"></div><div class="drop-burst"></div></div>
+            <div class="drop-wrap"><div class="drop"></div><div class="drop-burst"></div></div>
+            <div class="drop-wrap"><div class="drop"></div><div class="drop-burst"></div></div>
+
             <div class="shimmer-overlay"></div>
         </div>
-
-        <!-- 브랜드 이미지 -->
         <img class="brand-img" src="brand.jpg" alt="전데렐라의 청소생각">
-
-        <!-- 전화 버튼 -->
         <div class="btn-wrap">
             <a class="btn-call" href="tel:01087659925">
-                <div class="phone-icon">
-                    <svg viewBox="0 0 24 24">
-                        <path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2
-                        1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1-9.4 0-17-7.6-17-17
-                        0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1L6.6 10.8z"/>
-                    </svg>
-                </div>
-                <div class="call-text">
-                    <span class="call-label">지금 바로 전화 주세요</span>
-                    <span class="call-number">010-8765-9925</span>
-                </div>
+                <div class="phone-icon"><svg viewBox="0 0 24 24"><path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1-9.4 0-17-7.6-17-17 0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1L6.6 10.8z"/></svg></div>
+                <div class="call-text"><span class="call-label">지금 바로 전화 주세요</span><span class="call-number">010-8765-9925</span></div>
             </a>
         </div>
-
     </div>
 </body>
 </html>
